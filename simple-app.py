@@ -4,6 +4,7 @@ import os
 import boto3
 from urllib.parse import urlparse
 from pinecone import Pinecone
+import pinecone
 from langchain_openai import ChatOpenAI
 import openai
 from langchain.chains import LLMChain, RetrievalQA
@@ -135,11 +136,9 @@ embedding_function = VoyageAIEmbeddings(
     model=model_name,  
     voyage_api_key=VOYAGE_AI_API_KEY
 )
-vector_store = PineconeVectorStore(
-        pinecone_api_key=PINECONE_API_KEY,
-        embedding=embedding_function,
-        index_name=index_name
-    ).from_existing_index(
+# Initialize the Pinecone client
+pinecone.init(api_key=PINECONE_API_KEY, environment="us-east-1-aws")
+vector_store = PineconeVectorStore().from_existing_index(
         embedding=embedding_function,
         index_name=index_name
 )
