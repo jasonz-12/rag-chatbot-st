@@ -96,6 +96,9 @@ def ask_question(query, chain, llm):
 OPENAI_API_KEY = st.secrets["api_keys"]["OPENAI_API_KEY"]
 VOYAGE_AI_API_KEY = st.secrets["api_keys"]["VOYAGE_AI_API_KEY"]
 PINECONE_API_KEY = st.secrets["api_keys"]["PINECONE_API_KEY"]
+aws_access_key_id = st.secrets["aws"]["aws_access_key_id"]
+aws_secret_access_key = st.secrets["aws"]["aws_secret_access_key"]
+aws_region = st.secrets["aws"]["aws_region"]
 
 # Langchain stuff
 llm = ChatOpenAI(model="gpt-4o", openai_api_key=OPENAI_API_KEY)
@@ -114,7 +117,12 @@ prompt_template = ChatPromptTemplate.from_template(
     )
 
 # Initialize necessary objects (s3 client, Pinecone, OpenAI, etc.)
-# s3_client = boto3.client('s3')
+s3_client = boto3.client(
+    's3',
+    aws_access_key_id=aws_access_key_id,
+    aws_secret_access_key=aws_secret_access_key,
+    region_name=aws_region
+)
 # PINECONE
 pc = Pinecone(api_key=PINECONE_API_KEY)
 index_name = "drugbank"
@@ -129,7 +137,8 @@ embedding_function = VoyageAIEmbeddings(
 )
 vector_store = PineconeVectorStore.from_existing_index(
     embedding=embedding_function,
-    index_name=index_name
+    index_name=index_name,
+    pinecone_api_key=PINECONE_API_KEY
 )
 retriever = vector_store.as_retriever()
 
