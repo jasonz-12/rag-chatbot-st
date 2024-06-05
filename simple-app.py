@@ -127,7 +127,7 @@ s3_client = boto3.client(
 # PINECONE
 pc = Pinecone(api_key=PINECONE_API_KEY)
 index_name = "drugbank"
-openai.api_key = os.getenv('OPENAI_API_KEY')
+openai.api_key = OPENAI_API_KEY
 
 # Set up LangChain objects
 # VOYAGE AI
@@ -137,8 +137,7 @@ embedding_function = VoyageAIEmbeddings(
     voyage_api_key=VOYAGE_AI_API_KEY
 )
 # Initialize the Pinecone client
-pinecone.init(api_key=PINECONE_API_KEY, environment="us-east-1-aws")
-vector_store = PineconeVectorStore().from_existing_index(
+vector_store = PineconeVectorStore.from_existing_index(
         embedding=embedding_function,
         index_name=index_name
 )
