@@ -138,8 +138,8 @@ embedding_function = VoyageAIEmbeddings(
 vector_store = PineconeVectorStore(
     pinecone_api_key=PINECONE_API_KEY
     ).from_existing_index(
-    embedding=embedding_function,
-    index_name=index_name
+        embedding=embedding_function,
+        index_name=index_name
 )
 retriever = vector_store.as_retriever()
 
