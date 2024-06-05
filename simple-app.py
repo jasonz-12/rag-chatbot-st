@@ -114,7 +114,7 @@ prompt_template = ChatPromptTemplate.from_template(
     )
 
 # Initialize necessary objects (s3 client, Pinecone, OpenAI, etc.)
-s3_client = boto3.client('s3')
+# s3_client = boto3.client('s3')
 # PINECONE
 pc = Pinecone(api_key=PINECONE_API_KEY)
 index_name = "drugbank"
