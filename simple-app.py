@@ -100,6 +100,7 @@ PINECONE_API_KEY = st.secrets["api_keys"]["PINECONE_API_KEY"]
 aws_access_key_id = st.secrets["aws"]["aws_access_key_id"]
 aws_secret_access_key = st.secrets["aws"]["aws_secret_access_key"]
 aws_region = st.secrets["aws"]["aws_region"]
+os.environ["PINECONE_API_KEY"] = PINECONE_API_KEY
 
 # Langchain stuff
 llm = ChatOpenAI(model="gpt-4o", openai_api_key=OPENAI_API_KEY)
@@ -125,7 +126,9 @@ s3_client = boto3.client(
     region_name=aws_region
 )
 # PINECONE
-pc = Pinecone(api_key=PINECONE_API_KEY)
+pc = Pinecone(
+    api_key=PINECONE_API_KEY
+)
 index_name = "drugbank"
 openai.api_key = OPENAI_API_KEY
 
@@ -137,9 +140,10 @@ embedding_function = VoyageAIEmbeddings(
     voyage_api_key=VOYAGE_AI_API_KEY
 )
 # Initialize the Pinecone client
-vector_store = PineconeVectorStore.from_existing_index(
-        embedding=embedding_function,
-        index_name=index_name
+pvs = PineconeVectorStore()
+vector_store = pvs.from_existing_index(
+    embedding=embedding_function,
+    index_name=index_name
 )
 retriever = vector_store.as_retriever()
 
