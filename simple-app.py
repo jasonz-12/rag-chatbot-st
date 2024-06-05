@@ -136,8 +136,9 @@ embedding_function = VoyageAIEmbeddings(
     voyage_api_key=VOYAGE_AI_API_KEY
 )
 vector_store = PineconeVectorStore(
-    pinecone_api_key=PINECONE_API_KEY,
-    embedding=embedding_function
+        pinecone_api_key=PINECONE_API_KEY,
+        embedding=embedding_function,
+        index_name=index_name
     ).from_existing_index(
         embedding=embedding_function,
         index_name=index_name
