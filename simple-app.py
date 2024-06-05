@@ -140,8 +140,7 @@ embedding_function = VoyageAIEmbeddings(
     voyage_api_key=VOYAGE_AI_API_KEY
 )
 # Initialize the Pinecone client
-pvs = PineconeVectorStore()
-vector_store = pvs.from_existing_index(
+vector_store = PineconeVectorStore.from_existing_index(
     embedding=embedding_function,
     index_name=index_name
 )
